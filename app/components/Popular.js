@@ -3,11 +3,13 @@ var PropTypes = require('prop-types');
 
 var api = require('../utils/api');
 
+var Loading = require('./Loading');
+
 RepoGrid.propTypes = {
     repos: PropTypes.array.isRequired,
 }
 
-function RepoGrid (props) {
+function RepoGrid(props) {
     return (
         <ul className='popular-list'>
             {props.repos.map((repo, index) => {
@@ -42,10 +44,10 @@ function SelectLanguage(props) {
 
     return (
         <ul className='languages'>
-            {languages.map( (lang) => {
+            {languages.map((lang) => {
                 return (
                     <li
-                        style={lang === props.selectedLanguage ? { color: '#d0021b' }: null}
+                        style={lang === props.selectedLanguage ? { color: '#d0021b' } : null}
                         onClick={props.onSelect.bind(null, lang)}
                         key={lang}>
                         {lang}
@@ -80,9 +82,9 @@ class Popular extends React.Component {
         });
 
         api.fetchPopularRepos(lang)
-            .then(function(repos) {
+            .then(function (repos) {
                 this.setState({
-                    repos:repos
+                    repos: repos
                 })
             }.bind(this));
     }
@@ -90,11 +92,11 @@ class Popular extends React.Component {
     render() {
         return (
             <div>
-                <SelectLanguage 
-                    selectedLanguage={this.state.selectedLanguage} 
+                <SelectLanguage
+                    selectedLanguage={this.state.selectedLanguage}
                     onSelect={this.updateLanguage} />
                 {!this.state.repos
-                    ? <p>Loading</p>
+                    ? <Loading />
                     : <RepoGrid repos={this.state.repos} />}
             </div>
         );

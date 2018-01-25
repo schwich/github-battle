@@ -16,7 +16,7 @@ function getRepos(username) {
 }
 
 function getStarCount(repos) {
-    return repos.data.reduce( function(count, repo) {
+    return repos.data.reduce(function (count, repo) {
         return count + repo.stargazers_count;
     }, 0);
 }
@@ -56,18 +56,17 @@ function sortPlayers(players) {
 
 module.exports = {
 
-    battle: function(players) {
-        console.log('in battle');
+    battle: function (players) {
         return axios.all(players.map(getUserData))
             .then(sortPlayers)
             .catch(handleError);
     },
 
-    fetchPopularRepos: function(language) {
+    fetchPopularRepos: function (language) {
         var encodedURI = window.encodeURI('https://api.github.com/search/repositories?q=stars:>1000+language:' + language + '&sort=stars&order=desc&type=Repositories');
 
         return axios.get(encodedURI)
-            .then(function(response) {
+            .then(function (response) {
                 return response.data.items;
             });
     }
