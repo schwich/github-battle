@@ -11,6 +11,8 @@ var Home = require('./Home');
 var Battle = require('./Battle');
 var Results = require('./Results');
 
+var TestingFlexbox = require('./TestingFlexbox');
+
 class App extends React.Component {
 	render() {
 		return (
@@ -22,6 +24,7 @@ class App extends React.Component {
 						<Route exact path='/battle' component={Battle} />
 						<Route path='/battle/results' component={Results} />
 						<Route path='/popular' component={Popular} />
+						<Route path='/testing-flexbox' component={TestingFlexbox} />
 						<Route render={() => {
 							return <p>Not Found</p>
 						}} />
