@@ -1,7 +1,7 @@
-var React = require('react');
-var PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var styles = {
+const styles = {
   content: {
     textAlign: 'center',
     fontSize: '35px'
@@ -19,21 +19,20 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
-    var stopper = this.props.text + '...';
-    this.interval = window.setInterval(function () {
-      if (this.state.text === stopper) {
+    const { text, speed } = this.state;
+    const stopper = `${this.props.text}...`;
+    this.interval = window.setInterval(() => {
+      if (text === stopper) {
         this.setState({
           text: this.props.text
-        });
+        })
       }
       else {
-        this.setState(function (prevState) {
-          return {
-            text: prevState.text + '.'
-          }
-        });
+        this.setState(({ text }) => ({
+          text: `${text}.`
+        }))
       }
-    }.bind(this), this.props.speed);
+    }, speed);
   }
 
   componentWillUnmount() {
@@ -59,4 +58,4 @@ Loading.defaultProps = {
   speed: 300
 }
 
-module.exports = Loading;
+export default Loading;

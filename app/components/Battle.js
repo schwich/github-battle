@@ -1,9 +1,9 @@
-var React = require('react');
-var PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var Link = require('react-router-dom').Link;
+import { Link } from 'react-router-dom';
 
-var PlayerPreview = require('./PlayerPreview');
+import PlayerPreview from './PlayerPreview';
 
 class Battle extends React.Component {
 
@@ -22,31 +22,41 @@ class Battle extends React.Component {
   }
 
   handleSubmit(id, username) {
-    this.setState(() => {
-      var newState = {};
-      newState[id + 'Name'] = username;
-      newState[id + 'Image'] = 'https://github.com/' + username + '.png?size=200';
-      return newState;
-    });
+    // this.setState(() => {
+    //   var newState = {};
+    //   newState[id + 'Name'] = username;
+    //   newState[id + 'Image'] = 'https://github.com/' + username + '.png?size=200';
+    //   return newState;
+    // });
+    this.setState(() => ({
+      [id + 'Name']: username,
+      [id + 'Image']: `https://github.com/${username}.png?size=200`
+    }))
   }
 
   handleReset(id) {
-    this.setState(() => {
-      var newState = {};
-      newState[id + 'Name'] = '';
-      newState[id + 'Image'] = null;
-      return newState;
-    })
+    this.setState(() => ({
+      [id + 'Name']: '',
+      [id + 'Image']: null
+    }))
   }
 
   render() {
-    var match = this.props.match;
+    let { match } = this.props;
+    // var match = this.props.match;
 
-    var playerOneName = this.state.playerOneName;
-    var playerTwoName = this.state.playerTwoName;
+    let {
+      playerOneName,
+      playerOneImage,
+      playerTwoName,
+      playerTwoImage
+    } = this.state;
 
-    var playerOneImage = this.state.playerOneImage;
-    var playerTwoImage = this.state.playerTwoImage;
+    // var playerOneName = this.state.playerOneName;
+    // var playerTwoName = this.state.playerTwoName;
+
+    // var playerOneImage = this.state.playerOneImage;
+    // var playerTwoImage = this.state.playerTwoImage;
 
     // in a boolean expr, JS returns the second argument to a && if the first is true and the second is truthy
     // so <PlayerInput /> always returns truthy, and if the first bool returns truthy, then the entire expression is truthy and the second arg is returned
@@ -66,7 +76,7 @@ class Battle extends React.Component {
               username={playerOneName}>
               <button
                 className='reset'
-                onClick={this.handleReset.bind(null, 'playerOne')}>
+                onClick={() => this.handleReset('playerOne')}>
                 Reset
               </button>
             </PlayerPreview>}
@@ -103,20 +113,23 @@ class Battle extends React.Component {
   }
 }
 
-
 class PlayerInput extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      username: ''
-    }
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired
   }
 
-  handleChange(event) {
+  static defaultProps = {
+    label: 'Username'
+  }
+
+  state = {
+    username: ''
+  }
+
+  handleChange = (event) => {
     var value = event.target.value;
     this.setState(() => {
       return {
@@ -125,7 +138,7 @@ class PlayerInput extends React.Component {
     })
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     this.props.onSubmit(
@@ -135,22 +148,25 @@ class PlayerInput extends React.Component {
   }
 
   render() {
+    const { username } = this.state;
+    const { label } = this.props;
+
     return (
       <form className='column' onSubmit={this.handleSubmit}>
         <label className='header' htmlFor='username'>
-          {this.props.label}
+          {label}
         </label>
         <input
           id='username'
           placeholder='github username'
           type='text'
           autoComplete='off'
-          value={this.state.username}
+          value={username}
           onChange={this.handleChange} />
         <button
           className='button'
           type='submit'
-          disabled={!this.state.username}>
+          disabled={!username}>
           Submit
         </button>
       </form>
@@ -158,13 +174,4 @@ class PlayerInput extends React.Component {
   }
 }
 
-// this is quite annoying
-// this must be placed after the class declaration
-// however, you can place this BEFORE a function declaration, because of function hoisting I suppose
-PlayerInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired
-}
-
-module.exports = Battle;
+export default Battle;

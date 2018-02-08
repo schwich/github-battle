@@ -1,4 +1,5 @@
-var React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class TestingFlexbox extends React.Component {
 

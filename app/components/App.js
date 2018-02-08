@@ -1,17 +1,14 @@
-var React = require('react');
+import React from 'react';
 
-var ReactRouter = require('react-router-dom');
-var Router = ReactRouter.BrowserRouter;
-var Route = ReactRouter.Route;
-var Switch = ReactRouter.Switch;
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-var Nav = require('./Nav');
-var Popular = require('./Popular');
-var Home = require('./Home');
-var Battle = require('./Battle');
-var Results = require('./Results');
+import Nav from './Nav';
+import Popular from './Popular';
+import Home from './Home';
+import Battle from './Battle';
+import Results from './Results';
 
-var TestingFlexbox = require('./TestingFlexbox');
+import TestingFlexbox from './TestingFlexbox';
 
 class App extends React.Component {
 	render() {
@@ -35,4 +32,4 @@ class App extends React.Component {
 	}
 }
 
-module.exports = App;
+export default App;

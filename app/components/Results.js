@@ -1,14 +1,14 @@
-var React = require('react');
-var PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var Link = require('react-router-dom').Link;
+import { Link } from 'react-router-dom';
 
-var PlayerPreview = require('./PlayerPreview');
-var Loading = require('./Loading');
+import PlayerPreview from './PlayerPreview';
+import Loading from './Loading';
 
-var api = require('../utils/api');
+import { battle, fetchPopularRepos } from '../utils/api';
 
-var queryString = require('query-string');
+const queryString = require('query-string');
 
 function Profile(props) {
   var info = props.info;
@@ -57,25 +57,25 @@ class Results extends React.Component {
     }
   }
 
-  componentDidMount() {
-    var players = queryString.parse(this.props.location.search);
-    api.battle([
-      players.playerOneName,
-      players.playerTwoName
-    ]).then((results) => {
-      if (results === null) {
-        return this.setState({
-          error: 'Looks like there was an error.',
-          loading: false
-        });
-      }
+  async componentDidMount() {
 
-      this.setState({
-        error: null,
-        winner: results[0],
-        loser: results[1],
+    const players = await battle([
+      playerOneName,
+      playerTwo
+    ]);
+
+    if (players === null) {
+      return this.setState({
+        error: 'Looks like there was an error.',
         loading: false
       });
+    }
+
+    this.setState({
+      error: null,
+      winner: results[0],
+      loser: results[1],
+      loading: false
     });
   }
 
@@ -115,4 +115,4 @@ class Results extends React.Component {
   }
 }
 
-module.exports = Results;
+export default Results;
